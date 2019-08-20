@@ -1,16 +1,16 @@
 # UMIC-seq
-UMI-linked consensus sequencing tool.
+**UMI-linked consensus sequencing tool.**\
 Scripts accompanying "Protein engineering based on high fidelity nanopore sequencing using UMI-linked consensus reads" (Zurek PJ, Knyphausen P, Neufeld K, Pushpanath A, Hollfelder F, *in preparation*) 
 
 ## Setup and installation
 This python script is meant to be used as a stand-alone. Just download and copy it into your working directory or add it to your environment path.
 
 ### System requirements
-You'll need Linux or MacOS for some of the dependencies (scikit-bio). It also runs perfectly well on the Windows Subsystem for Linux though, so that is an option for Windows users.
+You'll need Linux or MacOS for some of the dependencies (scikit-bio). It also runs perfectly well on the Windows Subsystem for Linux though, so that is an option for Windows users.\
 An easy way to organise your python packages is with [conda](https://docs.conda.io/en/latest/miniconda.html).
 
 ### Python dependencies
-Set up a new environment `conda create -n UMIC-seq python=3` and install the following packages with `conda install {packagename}`:
+Set up a new environment `conda create -n UMIC-seq python=3` and install the following packages with `conda install`*`packagename`*:\
 *Versions numbers are the ones the scripts were tested with, newer versions should work too.*
 - python (version 3.6)
 - biopython (version 1.73)
@@ -25,6 +25,7 @@ Activate the new environment `conda activate UMIC-seq`.
 ## Analysis workflow example
 
 An example dataset in form of 100,000 basecalled reads in fastq format (example_reads.fastq) are provided within this repository. Additionally a short sequence located next to the UMI is provided (probe.fasta).
+
 
 ### Extraction of UMIs
 
@@ -41,6 +42,7 @@ Arguments:
 Optional:
 - min_probe_score: Defaults to length of probe sequence. Minimal alignment score of probe for processing.
 
+
 ### Clustering approximation
 
 Next, you might want to know what a suitable alignment score threshold for clustering the UMIs would be.
@@ -54,6 +56,7 @@ Arguments:
 Optional:
 - samplesize: Defaults to 25. Number of clusters to be sampled for threshold approximation.
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
+
 
 ### Full clustering
 
@@ -74,6 +77,7 @@ Optional:
 ## UMIC-seq_helper
 
 A helper script is provided for some additional functionality.
+
 
 ## iPython notebook
 
