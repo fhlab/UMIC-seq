@@ -39,6 +39,7 @@ Arguments:
 - umi_loc: Location of UMI in reference to the probe. Upstream (up) or downstream (down).
 - umi_len: Length of the UMI to be extracted.
 - output: Specify the name of the UMI output fasta file.
+
 Optional:
 - min_probe_score: Defaults to length of probe sequence. Minimal alignment score of probe for processing.
 
@@ -53,6 +54,7 @@ Arguments:
 - input: Fasta file of extracted UMIs.
 - steps: Accepts left border, right border and step width for sampled thresholds. Defaults to 20 70 10 (samples thresholds 20 30 40 .. 70).
 - output: Prefix for output files.
+
 Optional:
 - samplesize: Defaults to 25. Number of clusters to be sampled for threshold approximation.
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
@@ -70,6 +72,7 @@ Arguments:
 - aln_thresh: Alignment threshold for clustering. UMIs with alignment scores higher than aln_thresh will be clustered.
 - size_thresh: Minimal size a cluster can have to be written to file.
 - output: Folder name for output files.
+
 Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
 
