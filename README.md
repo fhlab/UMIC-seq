@@ -66,7 +66,7 @@ python UMIC-seq.py clusterfull --input ExtractedUMIs.fasta --reads example_reads
 ```
 Arguments:
 - input: Fasta file of extracted UMIs.
-- reads: Fastq file of basecaled reads.
+- reads: Fastq file of basecalled reads.
 - aln_thresh: Alignment threshold for clustering. UMIs with alignment scores higher than aln_thresh will be clustered.
 - size_thresh: Minimal size a cluster can have to be written to file.
 - output: Folder name for output files.
