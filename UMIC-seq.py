@@ -3,7 +3,6 @@
 #12/08/2019
 #v 1.0
 
-
 from Bio import SeqIO
 from Bio.Seq import Seq
 from skbio.alignment import StripedSmithWaterman
@@ -17,26 +16,35 @@ import argparse
 parser = argparse.ArgumentParser(description="""Main script for UMI-linked consensus sequencing.
                                  Author: Paul Zurek (pjz26@cam.ac.uk).
                                  Version 1.0""")
-parser.add_argument('mode', help='Select mode', choices=('UMIextract', 'clustertest', 'clusterfull'))
-parser.add_argument('-i', '--input', help='input')
-parser.add_argument('-o', '--output', help='output')
+#parser.add_argument('mode', help='Select mode', choices=('UMIextract', 'clustertest', 'clusterfull'))
 parser.add_argument('-T', '--threads', type=int, default=0, help='Number of threads to execute in parallel. Defaults to CPU count.')
 parser.add_argument('-v', '--version', action='version', version='1.0')
 
+subparsers = parser.add_subparsers(help='Select mode')
+
 #Arguments for UMIextract
-parser.add_argument('--probe', help='A short sequence (eg 50 bp) adjacent to the UMI in fasta format.')
-parser.add_argument('--umi_loc', help='Location of UMI in reference to the probe. Upstream (up) or downstream (down).', choices=('up', 'down'))
-parser.add_argument('--umi_len', help='Length of the UMI to be extracted.', type=int)
-parser.add_argument('--min_probe_score', help='Minimal alignment score of probe for processing. Defaults to length of probe sequence.', type=int, default=0)
+extract_parser = subparsers.add_parser('UMIextract', help='Extraction of UMIs from reads.')
+extract_parser.add_argument('-i', '--input', help='Provide basecalled reads in fastq format.', required=True)
+extract_parser.add_argument('-o', '--output', help='Specify the name of the UMI output fasta file.', required=True)
+extract_parser.add_argument('--probe', help='A short sequence (eg 50 bp) adjacent to the UMI in fasta format.', required=True)
+extract_parser.add_argument('--umi_loc', help='Location of UMI in reference to the probe. Upstream (up) or downstream (down).', choices=('up', 'down'), required=True)
+extract_parser.add_argument('--umi_len', help='Length of the UMI to be extracted.', type=int, required=True)
+extract_parser.add_argument('--min_probe_score', help='Minimal alignment score of probe for processing. Defaults to length of probe sequence.', type=int, default=0)
 
 #Arguments for clustertest
-parser.add_argument('--steps', help='Accepts left border, right border and step width for sampled thresholds. Defaults to 20 70 10 (samples thresholds 20 30 40 .. 70).', nargs=3, type=int)
-parser.add_argument('--samplesize', help='Number of clusters to be sampled for threshold approximation. Defaults to 25.', type=int, default=25)
+clustest_parser = subparsers.add_parser('clustertest', help='Test suitable alignment thresholds for clustering.')
+clustest_parser.add_argument('-i', '--input', help='Fasta file of extracted UMIs.', required=True)
+clustest_parser.add_argument('-o', '--output', help='Prefix for output files.', required=True)
+clustest_parser.add_argument('--steps', help='Accepts left border, right border and step width for sampled thresholds. Defaults to 20 70 10 (samples thresholds 20 30 40 .. 70).', nargs=3, type=int, required=True)
+clustest_parser.add_argument('--samplesize', help='Number of clusters to be sampled for threshold approximation. Defaults to 25.', type=int, default=25)
 
 #Arguments for clusterfull
-parser.add_argument('--reads', help='Fastq file of basecalled reads.')
-parser.add_argument('--aln_thresh', type=int, help='Alignment threshold for clustering. UMIs with alignment scores higher than aln_thresh will be clustered.')
-parser.add_argument('--size_thresh', type=int, help='Minimal size a cluster can have to be written to file.')
+fullclus_parser = subparsers.add_parser('clusterfull', help='Full clustering of UMIs.')
+fullclus_parser.add_argument('-i', '--input', help='Fasta file of extracted UMIs.', required=True)
+fullclus_parser.add_argument('-o', '--output', help='Folder name for output files.', required=True)
+fullclus_parser.add_argument('--reads', help='Fastq file of basecalled reads.', required=True)
+fullclus_parser.add_argument('--aln_thresh', type=int, help='Alignment threshold for clustering. UMIs with alignment scores higher than aln_thresh will be clustered.', required=True)
+fullclus_parser.add_argument('--size_thresh', type=int, help='Minimal size a cluster can have to be written to file.', required=True)
 
 #Parse arguments
 args = parser.parse_args()
@@ -44,7 +52,6 @@ mode = args.mode
 threads = args.threads
 if threads == 0:
     threads = multiprocessing.cpu_count()
-
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
