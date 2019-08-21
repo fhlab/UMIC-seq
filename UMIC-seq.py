@@ -359,7 +359,7 @@ def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0):
     print("Cluster files written")
 
 
-if mode == 'clusterfull'
+if mode == 'clusterfull':
     #Setup
     input_UMIfile = args.input   #'./2_UMIextract/UMIexRS_BC03.fasta'
     input_READSfile = args.reads  #'./1_demultiplex/UMIrandomsample_BC03.fastq'
