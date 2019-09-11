@@ -10,17 +10,16 @@ You'll need Linux or MacOS for some of the dependencies (scikit-bio). It also ru
 An easy way to organise your python packages is with [conda](https://docs.conda.io/en/latest/miniconda.html).
 
 ### Python dependencies
-Set up a new environment `conda create -n UMIC-seq python=3` and install the following packages with `conda install`*`packagename`*:\
+Set up a new environment `conda create -n UMIC-seq python=3`, activate it `conda activate UMIC-seq` and add conda-forge to the channel list `conda config --add channels conda-forge`. Install the following packages with `conda install`*`packagename`*:\
+*This will automatically install all further dependencies.*\
 *Versions numbers are the ones the scripts were tested with, newer versions should work too.*
-- python (version 3.6)
-- biopython (version 1.73)
-- scikit-bio (version 0.5.2)
-- scikit-allel
-- Matplotlib, numpy, scipy
+- python (version 3.7.4)
+- biopython (version 1.74)
+- scikit-bio (version 0.5.5)
+- scikit-allel (version 1.2.1)
 
 Alternatively, the conda environment specifically used in testing this script is provided here. Download UMIC-seq.yml and install with `conda env create -f UMIC-seq.yml`.
 
-Activate the new environment `conda activate UMIC-seq`.
 
 ## Analysis workflow example
 
@@ -52,7 +51,7 @@ python UMIC-seq.py clustertest --input ExtractedUMIs.fasta --steps 20 70 10  --o
 ```
 Arguments:
 - input: Fasta file of extracted UMIs.
-- steps: Accepts left border, right border and step width for sampled thresholds. Defaults to 20 70 10 (samples thresholds 20 30 40 .. 70).
+- steps: Left border, right border and step width for sampled thresholds. Defaults to 20 70 10 (samples thresholds 20 30 40 .. 70).
 - output: Prefix for output files.
 
 Optional:
