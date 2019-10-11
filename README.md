@@ -23,7 +23,7 @@ Alternatively, the conda environment specifically used in testing this script is
 
 ## Analysis workflow example
 
-An example dataset in form of 100,000 basecalled reads in fastq format (example_randomreads.fastq.gz) is provided [externally](https://www.dropbox.com/s/d8tkadbvq95p06h/example_randomreads.fastq.gz?dl=1). Additionally, 5000 basecalled reads pre-enriched for 12 clusters are provided within this repository (example_clusterreads.fastq.gz).
+An example dataset in form of 100,000 basecalled reads in fastq format (example_randomreads.fastq.gz) is provided [externally](https://www.dropbox.com/s/d8tkadbvq95p06h/example_randomreads.fastq.gz?dl=1). Additionally, 5000 basecalled reads pre-enriched for 36 clusters are provided within this repository (example_clusterreads.fastq.gz).\
 Also, the short sequence next to the UMI is provided for extraction on the sample datasets (probe.fasta).
 
 
