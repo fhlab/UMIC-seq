@@ -1,6 +1,6 @@
 # UMIC-seq
 **UMI-linked consensus sequencing tool.**\
-Scripts accompanying "Protein engineering based on high fidelity nanopore sequencing using UMI-linked consensus reads" (Zurek PJ, Knyphausen P, Neufeld K, Pushpanath A, Hollfelder F, *in preparation*) 
+Scripts accompanying "Protein engineering with high-accuracy nanopore consensus sequences" (Zurek PJ, Knyphausen P, Neufeld K, Pushpanath A, Hollfelder F, *in preparation*) 
 
 ## Setup and installation
 This python script is meant to be used as a stand-alone. Just download and copy it into your working directory or add it to your environment path.
@@ -23,7 +23,8 @@ Alternatively, the conda environment specifically used in testing this script is
 
 ## Analysis workflow example
 
-An example dataset in form of 100,000 basecalled reads in fastq format (example_reads.fastq) are provided within this repository. Additionally a short sequence located next to the UMI is provided (probe.fasta).
+An example dataset in form of 100,000 basecalled reads in fastq format (example_randomreads.fastq.gz) is provided [externally](https://www.dropbox.com/s/d8tkadbvq95p06h/example_randomreads.fastq.gz?dl=1). Additionally, 5000 basecalled reads pre-enriched for 12 clusters are provided within this repository (example_clusterreads.fastq.gz).
+Also, the short sequence next to the UMI is provided for extraction on the sample datasets (probe.fasta).
 
 
 ### Extraction of UMIs
