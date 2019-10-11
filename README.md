@@ -84,6 +84,6 @@ Optional:
 A helper script is provided for some additional functionality.
 
 
-## iPython notebook
+## jupyter notebook
 
 A notebook with the example in more detail will be made available.
