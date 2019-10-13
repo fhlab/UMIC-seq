@@ -1,0 +1,4 @@
+nanopolish index -d ./basecalls/workspace -s ./basecalls/sequencing_summary.txt filename
+minimap2 -ax map-ont -t 1 reference.fasta filename | samtools sort -o filename.bam -T filename.tmp
+samtools index filename.bam
+nanopolish variants --consensus -t 4 -q dam,dcm --max-haplotypes 100000 --min-flanking-sequence 3 --max-rounds 100 -o filename.vcf -r filename -b filename.bam -g reference.fasta
