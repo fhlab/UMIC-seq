@@ -82,3 +82,18 @@ Optional:
 ## UMIC-seq_helper
 
 A helper script is provided for some additional functionality.
+
+### Demultiplexing
+
+This is a very simple read demultiplexing script.
+```
+python UMIC-seq_helper.py demultiplex --barcodes barcodes.fasta --input filteredreads.fastq --threshs 22 29 --output demultiplexedreads
+```
+Arguments:
+- barcodes: Fasta file with barcodes to be used for demultiplexing.
+- input: Reads (fastq) to be demultiplexed.
+- threshs: Two integer values, lower and upper bound, for alignment score. The script will also output some diagnostics to determine suitable thresholds. Alignment must have a greater score to the target barcode than the upper bound and a lower score to all other barcodes than lower bound.
+- output: Name prefix for demultiplexed reads.
+
+Optional:
+- threads: Number of threads to use for alignment processing. Defaults to CPU count.
