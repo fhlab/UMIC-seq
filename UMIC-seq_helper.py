@@ -24,7 +24,7 @@ demultiplex_parser.add_argument('-o', '--output', help='Prefix for demultiplexed
 demultiplex_parser.add_argument('--barcodes', help='Fasta file of barcodes.', required=True)
 demultiplex_parser.add_argument('--threshs', help="""Lower and upper alignment score thresholds. 
 Will default to the barcode length for lower bound and barcode length * 1.2 for upper bound, which seem reasonable starting points for demultiplexing of nanopore R9.4.1 reads.
-Diagnostics to estimate better thresholds will be provided once the script is run""", required=True, type=int, nargs=2)
+Diagnostics to estimate better thresholds will be provided once the script is run""", type=int, nargs=2)
 
 #Arguments for nanopolish script generation
 genSH_parser = subparsers.add_parser('generateSH', help='Generate shell script for automated nanopolish execution.')
