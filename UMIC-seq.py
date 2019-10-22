@@ -1,7 +1,8 @@
 #Main script for UMI-linked consensus sequencing
 #Author: Paul Jannis Zurek, pjz26@cam.ac.uk
-#12/08/2019
+#21/08/2019
 #v 1.0
+
 
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -20,7 +21,7 @@ parser = argparse.ArgumentParser(description="""Main script for UMI-linked conse
 parser.add_argument('-T', '--threads', type=int, default=0, help='Number of threads to execute in parallel. Defaults to CPU count.')
 parser.add_argument('-v', '--version', action='version', version='1.0')
 
-subparsers = parser.add_subparsers(help='Select mode')
+subparsers = parser.add_subparsers(help='Select mode', dest='mode')
 
 #Arguments for UMIextract
 extract_parser = subparsers.add_parser('UMIextract', help='Extraction of UMIs from reads.')
@@ -52,6 +53,7 @@ mode = args.mode
 threads = args.threads
 if threads == 0:
     threads = multiprocessing.cpu_count()
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +90,7 @@ if mode == 'UMIextract':
     umi_len = args.umi_len
 
     proberec = SeqIO.read(probe_file, "fasta")
-    probe_minaln_score = args.probe_minaln_score
+    probe_minaln_score = args.min_probe_score
     if probe_minaln_score == 0:
         probe_minaln_score = len(proberec.seq)
 
@@ -146,7 +148,7 @@ if mode == 'UMIextract':
 
     print("%d sequences analysed" % count)
     print('\nUMIs extracted: %d' % success)
-    print("Discarded: %.2f%%" % ((bad_aln+short_aln)/count * 100))
+    print("Discarded: %.2f%%:" % ((bad_aln+short_aln)/count * 100))
     print("Bad alignment: %d" % bad_aln)
     print("Incomplete UMI: %d" % short_aln)
 
@@ -305,7 +307,7 @@ def threshold_approx(umis, ssize, left, right, step, outname):
 if mode == 'clustertest':
     #Setup
     input_file = args.input #'./2_UMIextract/UMIexCS_BC03.fasta'
-    sample_size = args.sample_size  #12
+    sample_size = args.samplesize  #12
     output_name = args.output  #'aproxCS_BC03'
     left, right, step = args.steps   #10, 60, 5
 
@@ -327,7 +329,6 @@ def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0):
     print("\nClustering done!")
     print(f"Number of clusters: {clus_N}")
     #print(f"Number of clusters (TEST): {max(labels) + 1}")
-    print(f"Median cluster size: {np.median(cluster_sizes)}")
     large_clus = [1 for size in cluster_sizes if size >= size_thresh]
     print(f"Clusters with >= {size_thresh} members: {sum(large_clus)}")
     seq_large_clus = sum([size for size in cluster_sizes if size >= size_thresh])
@@ -348,10 +349,11 @@ def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0):
     med = np.median(hist_clussize)
     plt.hist(hist_clussize, bins=np.arange(min(hist_clussize), max(hist_clussize)+binwidth, binwidth))
     textstr = f"Median: {med}"
+    print(f"Median number of sequences per cluster: {med}")
     plt.text(0.85, 0.85, textstr, transform=fig.transFigure, ha='right')
     plt.xlabel("Cluster size")
     plt.ylabel("Number of sequences")
-    plt.savefig(output_folder + "clustersizes_sequences.pdf", bbox_inches='tight')
+    plt.savefig(output_folder + "_clustersizes_sequences.pdf", bbox_inches='tight')
     print("Clustersize distributions plotted")
 
     count = 0
@@ -361,7 +363,7 @@ def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0):
             count += 1
             clus_member_ids = [rec.id for rec, lab in zip(umis, labels) if lab == i]
             clus_members = [reads[seqid] for seqid in clus_member_ids]
-            fname = output_folder + "cluster_" + str(count) + ".fasta" #FASTA OR FASTQ?
+            fname = output_folder + "/cluster_" + str(count) + ".fasta" #FASTA OR FASTQ?
             SeqIO.write(clus_members, fname, "fasta")
     print("Cluster files written")
 
@@ -376,7 +378,7 @@ if mode == 'clusterfull':
 
     #Make output directory
     if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+        os.makedirs(output_folder) 
 
     #USE SeqIO.index FOR ALL! Should be decently memory efficient!
     reads = SeqIO.index(input_READSfile, "fastq")
