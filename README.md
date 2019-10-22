@@ -143,13 +143,13 @@ Bin 40.4-44.2:   32753
 Bin 44.2-48.0:   24317
 
 Thresholds for assignment were set to:
-Upper threshold: 29 (highest score must be greater)
-Lower threshold: 22 (second highest score must be lower)
+Upper threshold: 28 (highest score must be greater)
+Lower threshold: 24 (second highest score must be lower)
 
 Number of sequences assigned to barcodes:
 Barcodes: ['BC01', 'BC02', 'BC03', 'none']
-Sequence count: [23193, 28981, 35798, 12028]
-Relative (%): [23.19, 28.98, 35.8, 12.03]
+Sequence count: [23572, 29402, 36790, 10236]
+Relative (%): [23.57, 29.4, 36.79, 10.24]
 ```
 
 
