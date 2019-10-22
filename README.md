@@ -74,9 +74,9 @@ Optional:
 
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*\
-`Histogram of similarity scores:                             Threshold approximation:`\
+`Histogram of similarity scores: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Threshold approximation:`\
 <img src="/example/randomsample_similarityscores_hist.png" width="421" height="310">
-<img src="/example/randomsample_thresholdapproximation.png" width="303" height="265">
+<img src="/example/randomsample_thresholdapproximation.png" width="333" height="292">
 
 
 
