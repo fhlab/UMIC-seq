@@ -73,9 +73,8 @@ Optional:
 
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*
-[[https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png|alt=Histogram of similarity scores]]
-[[https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png|alt=Threshold approximation]]
-
+![Histogram of similarity scores](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Histogram of similarity scores")
+![Threshold approximation](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
 
 
 
@@ -101,8 +100,7 @@ Number of clusters: 3723
 Clusters with >= 5 members: 1910
 Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
 Median number of sequences per cluster: 9.0
-[[https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_clustersizes_sequences.png|alt=Clustersize vs sequence count]]
-
+![Clustersize vs sequence count](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_clustersizes_sequences.png "Clustersize vs sequence count")
 
 
 
