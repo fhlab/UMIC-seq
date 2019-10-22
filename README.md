@@ -75,15 +75,11 @@ Optional:
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*\
 `Histogram of similarity scores:`
-![Hist](/example/randomsample_similarityscores_hist.png "Similarity score histogram")
+<img src="/example/randomsample_similarityscores_hist.png" width="360" height="265">
 `Threshold approximation:`
-![Thresh](/example/randomsample_thresholdapproximation.png "Threshold approximation")
+<img src="/example/randomsample_thresholdapproximation.png" width="303" height="265">
 
-Test 1\
-<img src="/example/randomsample_thresholdapproximation.png">
 
-Test 2\
-<img src="/example/randomsample_thresholdapproximation.png" width="100" height="100">
 
 ### Full clustering
 
@@ -110,8 +106,7 @@ Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
 Median number of sequences per cluster: 9.0
 ```
 `Cluster sizes:`
-![Clussize](/example/randomsample_clustersizes_sequences.png "Clustersizes")
-
+<img src="/example/randomsample_clustersizes_sequences.png" width="406" height="302">
 
 
 ## UMIC-seq_helper
