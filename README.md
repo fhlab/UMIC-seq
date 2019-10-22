@@ -75,7 +75,7 @@ Optional:
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*\
 `Histogram of similarity scores:`
-![Hist](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Histogram of similarity scores")
+![Hist](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png | width=200 "Histogram of similarity scores")
 `Threshold approximation:`
 ![Thresh](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
 
