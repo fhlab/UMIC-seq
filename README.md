@@ -45,7 +45,7 @@ Arguments:
 Optional:
 - min_probe_score: Defaults to length of probe sequence. Minimal alignment score of probe for processing.
 
-Example output:
+Example output:\
 *(Input: Barcode 1 (BC01) of demultiplexed example_randomreads.fastq)*
 ```
 23193 sequences analysed.
@@ -72,7 +72,7 @@ Optional:
 - samplesize: Defaults to 25. Number of clusters to be sampled for threshold approximation.
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
 
-Example output:
+Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*
 ```
 IMAGES: Approximation and 25 histograms
@@ -96,7 +96,7 @@ Arguments:
 Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
 
-Example output:
+Example output:\
 *(Input: Extracted UMIs and reads from BC01 of example_randomreads.fastq. The size threshold was set to 5, as the example dataset is just a sample of a full dataset.)*
 ```
 Number of clusters: 3723
@@ -126,6 +126,32 @@ Arguments:
 Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
 - output: Name prefix for demultiplexed reads.
+
+Example output:\
+*(Input: example_randomreads.fastq)*
+```
+Distribution of all alignment scores:
+Bin 10.0-13.8:   147049
+Bin 13.8-17.6:   334310
+Bin 17.6-21.4:   21249
+Bin 21.4-25.2:   3582
+Bin 25.2-29.0:   3860
+Bin 29.0-32.8:   7397
+Bin 32.8-36.6:   10764
+Bin 36.6-40.4:   14719
+Bin 40.4-44.2:   32753
+Bin 44.2-48.0:   24317
+
+Thresholds for assignment were set to:
+Upper threshold: 29 (highest score must be greater)
+Lower threshold: 22 (second highest score must be lower)
+
+Number of sequences assigned to barcodes:
+Barcodes: ['BC01', 'BC02', 'BC03', 'none']
+Sequence count: [23193, 28981, 35798, 12028]
+Relative (%): [23.19, 28.98, 35.8, 12.03]
+```
+
 
 
 ### Generate nanopolish shell script
