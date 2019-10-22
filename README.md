@@ -97,12 +97,12 @@ Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
 
 Example output:\
-*(Input: Extracted UMIs and reads from BC01 of example_randomreads.fastq. The size threshold was set to 5, as the example dataset is just a sample of a full dataset.)*
+*(Input: Extracted UMIs and reads from BC01 of example_randomreads.fastq. The size threshold was set to 5, as the example dataset is just a random subset of the full dataset (100,000 sequences, approx 9% of the full dataset). Clustersizes are thus expected to be smaller in the random example dataset.)*
 ```
 Number of clusters: 3723
-Median cluster size: 5.0
 Clusters with >= 5 members: 1910
 Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
+Median number of sequences per cluster: 9.0
 IMAGE: Cluster size distribution
 ```
 
