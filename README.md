@@ -75,7 +75,7 @@ Optional:
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*\
 `Histogram of similarity scores:`
-![Hist](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Similarity score histogram"){:height="10%" width="10%"}
+![Hist](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Similarity score histogram")
 `Threshold approximation:`
 ![Thresh](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
 
@@ -135,6 +135,7 @@ Optional:
 
 Example output:\
 *(Input: example_randomreads.fastq)*
+```
 Distribution of all alignment scores:
 Bin 10.0-13.8:   147049
 Bin 13.8-17.6:   334310
@@ -155,7 +156,7 @@ Number of sequences assigned to barcodes:
 Barcodes: ['BC01', 'BC02', 'BC03', 'none']
 Sequence count: [23572, 29402, 36790, 10236]
 Relative (%): [23.57, 29.4, 36.79, 10.24]
-
+```
 
 
 ### Generate nanopolish shell script
