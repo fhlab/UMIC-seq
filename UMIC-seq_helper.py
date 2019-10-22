@@ -73,9 +73,9 @@ def select_bc(scores):
         return n_barcodes
 
 if mode == 'demultiplex':
-    input_file = args.input     # eg. samplereads.fastq   #Nanopore bc: 24 bp !
+    input_file = args.input     #'./0_preproduction/UMIclustersample.fastq'   #Nanopore bc: 24 bp !
     output_name = args.output
-    bc_file = args.barcodes   # eg. barcodes.fasta
+    bc_file = args.barcodes   #'./1_demultiplex/barcodes.fasta'
 
     #Load barcodes
     print("Loading...")
@@ -89,7 +89,7 @@ if mode == 'demultiplex':
     
     #Set default thresholds
     if args.threshs is not None:
-        lowthresh, highthresh = args.threshs    #--> Histogram is provided to estimate useful thresholds
+        lowthresh, highthresh = args.threshs    #22 (default to ~len(BC))  #29 (default to ~len(BC) * 1.2)    --> Histogram is provided to estimate useful thresholds
     else:
         len_barcode = len(barcodes[0])
         lowthresh = len_barcode
@@ -103,6 +103,9 @@ if mode == 'demultiplex':
     print("Assigning...")
     assigned_bcs = pool.map(select_bc, score_lst)
     pool.close()
+    #Testing speed with a set of 5000 random sequences.
+    #Single thread: 8.12, 8.54, 8.25
+    #Four threads: 2.81, 2.82, 2.86
 
     #Sample some to be able to estimate good lower and upper thresholds:
     print("\nSampling some scores (to estimate suitable thresholds):")
@@ -128,7 +131,11 @@ if mode == 'demultiplex':
     print(f"Sequence count: {barcode_dist}")
     print(f"Relative (%): {[round(nbc/sum(barcode_dist)*100,2) for nbc in barcode_dist]}")
 
-    #Very large memory requirement... Work with SeqIO.index to not load everything into memory?!
+    #MEMORY
+    # 16.0 GB RAM (for fastq of 2.6 GB) -> 8x the size of the fastq...
+    #-> JUST WHILE ALIGNING!
+    #--> Very large memory requirement... work with SeqIO.index to not load everything!
+    
     #Write this as generator and pass generator to SeqIO.write?
     barcoded_recs = [[] for _ in range(n_assigns)]
     records = SeqIO.parse(input_file, 'fastq')
@@ -148,8 +155,8 @@ if mode == 'demultiplex':
 #CREATE SH
 
 if mode == 'generateSH':
-    input_file = args.input # eg. filenames.txt
-    output_file = args.output
+    input_file = args.input #'./4_clustering/BC01_CS-clusters/filenames.txt'
+    output_file = args.output #'nanopolish.sh'  #optional
     keyword = args.keyword
 
     #Arguments
@@ -197,20 +204,21 @@ def mutate_reference(muts, refstr):
     return "".join(variant)
 
 
+#NEEDS TESTING!
 if mode == 'vcf2fasta':
     from allel import read_vcf
     from Bio.Seq import Seq
     from Bio.SeqRecord import SeqRecord
 
     #Arguments
-    suppfrac = args.min_suppfrac #eg. 0.6
-    input_file = args.input  #Get this e.g. with ls -d "$PWD"*.vcf
-    reference_file = args.reference
-    output_file = args.output
+    suppfrac = args.min_suppfrac #0.6
+    input_file = args.input #'./5_nanopolished/vcffilenames.txt'
+    reference_file = args.reference #'refQM.fasta'
+    output_file = args.output #'consensus_sequences.fasta'
 
     #Load
     print("Loading vcf filenames and reference sequence")
-    filenames = [line.rstrip('\n') for line in open(input_file)] 
+    filenames = [line.rstrip('\n') for line in open(input_file)]  #Get this e.g. with ls -d "$PWD"*.vcf
     reference = SeqIO.read(reference_file, "fasta")
     refstr = str(reference.seq)
 
