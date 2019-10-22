@@ -74,9 +74,12 @@ Optional:
 
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*\
-`Histogram of similarity scores:` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `Threshold approximation:`\
-<img src="/example/randomsample_similarityscores_hist.png" width="421" height="310">
-<img src="/example/randomsample_thresholdapproximation.png" width="315" height="276">
+```
+Figure 1: Histogram of similarity scores
+Figure 2: Threshold approximation
+```
+1: <img src="/example/randomsample_similarityscores_hist.png" width="421" height="310">
+2: <img src="/example/randomsample_thresholdapproximation.png" width="315" height="276">
 
 
 
@@ -103,8 +106,8 @@ Number of clusters: 3723
 Clusters with >= 5 members: 1910
 Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
 Median number of sequences per cluster: 9.0
+Histogram of sequences per cluster:
 ```
-`Cluster sizes:`\
 <img src="/example/randomsample_clustersizes_sequences.png" width="406" height="302">
 
 
