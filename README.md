@@ -47,12 +47,13 @@ Optional:
 
 Example output:\
 *(Input: Barcode 1 (BC01) of demultiplexed example_randomreads.fastq)*
+```
 23193 sequences analysed.
 UMIs extracted: 21698
 Discarded: 6.45%:
 Bad alignment: 490
 Incomplete UMI: 1005
-
+```
 
 
 
@@ -73,8 +74,10 @@ Optional:
 
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*
-![Histogram of similarity scores](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Histogram of similarity scores")
-![Threshold approximation](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
+`Histogram of similarity scores:`
+[Hist](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Histogram of similarity scores")
+`Threshold approximation:`
+[Thresh](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
 
 
 
@@ -96,11 +99,14 @@ Optional:
 
 Example output:\
 *(Input: Extracted UMIs and reads from BC01 of example_randomreads.fastq. The size threshold was set to 5, as the example dataset is just a random subset of the full dataset (100,000 sequences, approx 9% of the full dataset). Clustersizes are thus expected to be smaller in the random example dataset.)*
+```
 Number of clusters: 3723
 Clusters with >= 5 members: 1910
 Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
 Median number of sequences per cluster: 9.0
-![Clustersize vs sequence count](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_clustersizes_sequences.png "Clustersize vs sequence count")
+```
+`Cluster sizes:`
+[Clussize](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_clustersizes_sequences.png "Clustersizes")
 
 
 
