@@ -1,4 +1,4 @@
-# UMIC-seq
+# UMIC-seq  UPDATE SCRIPT! PROBE MIN ALN SCORE!
 **UMI-linked consensus sequencing tool.**\
 Scripts accompanying "High-accuracy nanopore consensus sequencing for protein engineering" (Zurek PJ, Knyphausen P, Neufeld K, Pushpanath A, Hollfelder F, *in preparation*) 
 
@@ -23,7 +23,7 @@ Alternatively, the conda environment specifically used in testing this script is
 
 ## Analysis workflow example
 
-An example dataset in form of 100,000 basecalled reads in fastq format (example_randomreads.fastq.gz) is provided [externally](https://www.dropbox.com/s/d8tkadbvq95p06h/example_randomreads.fastq.gz?dl=1). Additionally, 5000 basecalled reads pre-enriched for 36 clusters are provided within this repository (example_clusterreads.fastq.gz).\
+An example dataset in form of 100,000 basecalled reads in fastq format (example_randomreads.fastq.gz) is provided [externally](https://www.dropbox.com/s/d8tkadbvq95p06h/example_randomreads.fastq.gz?dl=1). Additionally, 5000 basecalled reads pre-enriched for 36 clusters are provided within this repository (example_clusterreads.fastq.gz). All functions will be illustrated on the basis of these exemplary datasets.\
 Also, provided are:
 - barcodes.fasta: The three barcodes used to demultiplex the sample datasets.
 - probe.fasta: The short sequence next to the UMI is provided for extraction on the sample datasets.
@@ -45,6 +45,17 @@ Arguments:
 Optional:
 - min_probe_score: Defaults to length of probe sequence. Minimal alignment score of probe for processing.
 
+Example output:
+*(Input: Barcode 1 (BC01) of demultiplexed example_randomreads.fastq)*
+```
+23193 sequences analysed.
+UMIs extracted: 21698
+Discarded: 6.45%:
+Bad alignment: 490
+Incomplete UMI: 1005
+```
+
+
 
 ### Clustering approximation
 
@@ -60,6 +71,13 @@ Arguments:
 Optional:
 - samplesize: Defaults to 25. Number of clusters to be sampled for threshold approximation.
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
+
+Example output:
+*(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*
+```
+IMAGES: Approximation and 25 histograms
+```
+
 
 
 ### Full clustering
@@ -77,6 +95,17 @@ Arguments:
 
 Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
+
+Example output:
+*(Input: Extracted UMIs and reads from BC01 of example_randomreads.fastq. The size threshold was set to 5, as the example dataset is just a sample of a full dataset.)*
+```
+Number of clusters: 3723
+Median cluster size: 5.0
+Clusters with >= 5 members: 1910
+Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
+IMAGE: Cluster size distribution
+```
+
 
 
 ## UMIC-seq_helper
