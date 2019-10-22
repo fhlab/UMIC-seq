@@ -79,7 +79,11 @@ Example output:\
 `Threshold approximation:`
 ![Thresh](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
 
+Test 1\
+<img src="https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png">
 
+Test 2\
+<img src="https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png" width="100" height="100">
 
 ### Full clustering
 
