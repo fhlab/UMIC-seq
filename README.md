@@ -1,4 +1,4 @@
-# UMIC-seq  UPDATE SCRIPT! PROBE MIN ALN SCORE!
+# UMIC-seq
 **UMI-linked consensus sequencing tool.**\
 Scripts accompanying "High-accuracy nanopore consensus sequencing for protein engineering" (Zurek PJ, Knyphausen P, Neufeld K, Pushpanath A, Hollfelder F, *in preparation*) 
 
