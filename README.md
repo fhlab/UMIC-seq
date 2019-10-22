@@ -73,7 +73,7 @@ Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
 
 Example output:\
-*(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*\
+*(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*
 ```
 Figure 1: Histogram of similarity scores
 Figure 2: Threshold approximation
