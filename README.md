@@ -47,13 +47,12 @@ Optional:
 
 Example output:\
 *(Input: Barcode 1 (BC01) of demultiplexed example_randomreads.fastq)*
-```
 23193 sequences analysed.
 UMIs extracted: 21698
 Discarded: 6.45%:
 Bad alignment: 490
 Incomplete UMI: 1005
-```
+
 
 
 
@@ -74,10 +73,9 @@ Optional:
 
 Example output:\
 *(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*
-```
 [[https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png|alt=Histogram of similarity scores]]
 [[https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png|alt=Threshold approximation]]
-```
+
 
 
 
@@ -99,13 +97,12 @@ Optional:
 
 Example output:\
 *(Input: Extracted UMIs and reads from BC01 of example_randomreads.fastq. The size threshold was set to 5, as the example dataset is just a random subset of the full dataset (100,000 sequences, approx 9% of the full dataset). Clustersizes are thus expected to be smaller in the random example dataset.)*
-```
 Number of clusters: 3723
 Clusters with >= 5 members: 1910
 Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
 Median number of sequences per cluster: 9.0
 [[https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_clustersizes_sequences.png|alt=Clustersize vs sequence count]]
-```
+
 
 
 
@@ -130,7 +127,6 @@ Optional:
 
 Example output:\
 *(Input: example_randomreads.fastq)*
-```
 Distribution of all alignment scores:
 Bin 10.0-13.8:   147049
 Bin 13.8-17.6:   334310
@@ -151,7 +147,6 @@ Number of sequences assigned to barcodes:
 Barcodes: ['BC01', 'BC02', 'BC03', 'none']
 Sequence count: [23572, 29402, 36790, 10236]
 Relative (%): [23.57, 29.4, 36.79, 10.24]
-```
 
 
 
