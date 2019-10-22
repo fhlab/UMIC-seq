@@ -73,11 +73,11 @@ Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
 
 Example output:\
-*(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*
+*(Input: Extracted UMIs from BC01 of example_randomreads.fastq)*\
 `Histogram of similarity scores:`
-[Hist](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Histogram of similarity scores")
+![Hist](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_similarityscores_hist.png "Histogram of similarity scores")
 `Threshold approximation:`
-[Thresh](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
+![Thresh](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_thresholdapproximation.png "Threshold approximation")
 
 
 
@@ -106,7 +106,7 @@ Total number of sequences in clusters with >= 5 members: 17949 (77.39%)
 Median number of sequences per cluster: 9.0
 ```
 `Cluster sizes:`
-[Clussize](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_clustersizes_sequences.png "Clustersizes")
+![Clussize](https://github.com/fhlab/UMIC-seq/tree/master/example/randomsample_clustersizes_sequences.png "Clustersizes")
 
 
 
