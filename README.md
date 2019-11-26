@@ -78,8 +78,8 @@ Example output:\
 Figure 1: Histogram of similarity scores
 Figure 2: Threshold approximation
 ```
-1: <img src="/example/randomsample_similarityscores_hist.png" width="421" height="310">
-2: <img src="/example/randomsample_thresholdapproximation.png" width="315" height="276">
+1: <img src="/example/fullBC01_similarityscores_hist.png" width="421" height="310">
+2: <img src="/example/fullBC01_thresholdapproximation.png" width="315" height="276">
 
 1: A randomly chosen UMI is aligned to all other UMI sequences and the resulting alignment scores are plotted as a histogram. Here, a lot of low alignment scores as well as few sequences with high alignment scores (a potential cluster) are expected. A suitable clustering threshold separates the two.\
 2: Clustering information (cluster size and similarity of sequences in a cluster) is shown for sampled clusters with different thresholds. A suitable threshold is found when both metrics begin to saturate.
