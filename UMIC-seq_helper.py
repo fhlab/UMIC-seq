@@ -1,13 +1,17 @@
 #Helper script for UMI-linked consensus sequencing
 #Author: Paul Jannis Zurek, pjz26@cam.ac.uk
-#21/08/2019
-#v 1.0
+#21/08/2019 v 1.0
+#07/02/2020 v 1.1
+## Increased memory efficiency:
+## - Using SeqIO.index
+## - Using generators (and imap instead of map)
 
 import numpy as np
 from Bio import SeqIO
 from skbio.alignment import StripedSmithWaterman
 import multiprocessing
 import argparse
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description="""Helper script for UMI-linked consensus sequencing.
                                  Author: Paul Zurek (pjz26@cam.ac.uk).
@@ -51,11 +55,8 @@ if threads == 0:
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #DEMULTIPLEX
-#To optimize: Don't store all records in memory... Work with SeqIO.index ?
-#Doesn't have to be super duper stringent, as UMIs basically filter too!
 
-def align(record):
-    rec_str = str(record.seq)
+def align(rec_str):
     aln_scores = []
     for query in ssw_queries:
         aln = query(rec_str)
@@ -78,7 +79,7 @@ if mode == 'demultiplex':
     bc_file = args.barcodes   #'./1_demultiplex/barcodes.fasta'
 
     #Load barcodes
-    print("Loading...")
+    print("Generating barcode queries...")
     barcodes = list(SeqIO.parse(bc_file, "fasta"))
     n_barcodes = len(barcodes)
     barcode_names = [bc.id for bc in barcodes] + ['none']
@@ -94,18 +95,24 @@ if mode == 'demultiplex':
         len_barcode = len(barcodes[0])
         lowthresh = len_barcode
         highthresh = int(len_barcode * 1.2)
+    
+    #Number of sequences
+    print("Loading records...")
+    N_seq = len([1 for line in open(input_file)]) // 4
+    print(f"{N_seq} entries")
 
-    #Generate alignment scores
-    records = SeqIO.parse(input_file, 'fastq')
-    pool = multiprocessing.Pool(processes=threads)
+    #Record sequence generator to save memory!
+    records = (str(rec.seq) for rec in SeqIO.parse(input_file, 'fastq'))
+    
+    #Aligning
     print("Aligning...")
-    score_lst = pool.map(align, records)
+    pool = multiprocessing.Pool(processes=threads)
+    score_lst = list(tqdm(pool.imap(align, records, chunksize=100), total=N_seq))
+    #pool imap takes a generator and returns a generator (thus turning to list here)! saves memory and enables results to be used as they come (not needed here)!
     print("Assigning...")
     assigned_bcs = pool.map(select_bc, score_lst)
     pool.close()
-    #Testing speed with a set of 5000 random sequences.
-    #Single thread: 8.12, 8.54, 8.25
-    #Four threads: 2.81, 2.82, 2.86
+    pool.join()
 
     #Sample some to be able to estimate good lower and upper thresholds:
     print("\nSampling some scores (to estimate suitable thresholds):")
@@ -131,23 +138,12 @@ if mode == 'demultiplex':
     print(f"Sequence count: {barcode_dist}")
     print(f"Relative (%): {[round(nbc/sum(barcode_dist)*100,2) for nbc in barcode_dist]}")
 
-    #MEMORY
-    # 16.0 GB RAM (for fastq of 2.6 GB) -> 8x the size of the fastq...
-    #-> JUST WHILE ALIGNING!
-    #--> Very large memory requirement... work with SeqIO.index to not load everything!
     
-    #Write this as generator and pass generator to SeqIO.write?
-    barcoded_recs = [[] for _ in range(n_assigns)]
-    records = SeqIO.parse(input_file, 'fastq')
-    i = 0
-    for rec in records:
-        bc_id = assigned_bcs[i]
-        barcoded_recs[bc_id].append(rec)
-        i += 1
-
-    for i in range(n_assigns):
-        SeqIO.write(barcoded_recs[i], f'{output_name}_{barcode_names[i]}.fastq', 'fastq')
-    print('Records written to file.')
+    #Generator for writing correct barcode files for memory efficiency
+    print("\nWriting to file...")
+    for bc_id in range(n_assigns): 
+        barcode_gen = (rec for i, rec in enumerate(SeqIO.parse(input_file, 'fastq')) if assigned_bcs[i] == bc_id) 
+        SeqIO.write(barcode_gen, f'{output_name}_{barcode_names[bc_id]}.fastq', 'fastq')
 
 
 
