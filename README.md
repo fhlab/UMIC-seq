@@ -99,6 +99,9 @@ Arguments:
 
 Optional:
 - threads: Number of threads to use for alignment processing. Defaults to CPU count.
+- stop_thresh: Defaults to 5. Stops clustering if the average cluster size is smaller than this threshold. Essentially speeds up the clustering by dropping outliers. Set the threshold to 0 if you do not want the program to quit early!
+- stop_window: Defaults to 20. Sets the number of clusters to be used to calculate average cluster size.
+
 
 Example output:\
 *(Input: Extracted UMIs and reads from BC01 of example_randomreads.fastq. The size threshold was set to 5, as the example dataset is just a random subset of the full dataset (100,000 sequences, approx 9% of the full dataset). Clustersizes are thus expected to be smaller in the random example dataset.)*
