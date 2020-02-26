@@ -401,8 +401,9 @@ if mode == 'clusterfull':
     #USE SeqIO.index FOR ALL! Should be decently memory efficient!
     reads = SeqIO.index(input_READSfile, "fastq")
     umis = list(SeqIO.parse(input_UMIfile, "fasta"))
-    #pass lust UMI and lust reads!
 
+    #NOW ENDS EARLY IF CLUSSIZE_WINDOW AND THRESH ARE SET!
+    #Calculates average clusterisze over the last X clusters and stops clustering if this is below thresh!
     cluster_sequences(umis, reads, aln_thresh, size_thresh, clussize_thresh=clussize_thresh, clussize_window=clussize_window)
 
 
