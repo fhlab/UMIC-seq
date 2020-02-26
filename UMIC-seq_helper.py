@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description="""Helper script for UMI-linked consensus sequencing.
                                  Author: Paul Zurek (pjz26@cam.ac.uk).
-                                 Version 1.0""")
+                                 Version 1.1""")
 parser.add_argument('-T', '--threads', type=int, default=0, help='Number of threads to execute in parallel. Defaults to CPU count.')
 parser.add_argument('-v', '--version', action='version', version='1.0')
 
