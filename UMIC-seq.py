@@ -46,8 +46,9 @@ fullclus_parser.add_argument('-o', '--output', help='Folder name for output file
 fullclus_parser.add_argument('--reads', help='Fastq file of basecalled reads.', required=True)
 fullclus_parser.add_argument('--aln_thresh', type=int, help='Alignment threshold for clustering. UMIs with alignment scores higher than aln_thresh will be clustered.', required=True)
 fullclus_parser.add_argument('--size_thresh', type=int, help='Minimal size a cluster can have to be written to file.', required=True)
-fullclus_parser.add_argument('--stop_window', type=int, default=20, required=False, help='Defaults to 20. Set window size to 0 if you do not want the program to quit early.')
-fullclus_parser.add_argument('--stop_thresh', type=int, default=5, required=False, help='Defaults to 5. Stops clustering if average cluster size in window is smaller than this threshold.')
+fullclus_parser.add_argument('--stop_thresh', type=int, default=5, required=False, help='Defaults to 5. Stops clustering if the average cluster size is smaller than this threshold. Essentially speeds up the clustering by dropping outliers. Set the threshold to 0 if you do not want the program to quit early!')
+fullclus_parser.add_argument('--stop_window', type=int, default=20, required=False, help='Defaults to 20. Sets the number of clusters to be used to calculate average cluster size.')
+
 
 #Parse arguments
 args = parser.parse_args()
@@ -167,7 +168,7 @@ def aln_score(query_nr, umi):
     score = aln.optimal_alignment_score
     return score
 
-def simplesim_cluster(umis, thresh, max_clusters=0, save_scores=False, clussize_window=0, clussize_thresh=5):
+def simplesim_cluster(umis, thresh, max_clusters=0, save_scores=False, clussize_thresh=0, clussize_window=20):
     N_umis = len(umis)
     #Need to generate SSW query list, as I cannot pass those objects via pool.map
     global query_lst 
@@ -204,7 +205,7 @@ def simplesim_cluster(umis, thresh, max_clusters=0, save_scores=False, clussize_
         clussize.append(len(sim_lst))
         clusnr += 1
         
-        if clussize_window > 0:
+        if clussize_thresh > 0:
             #Check last few clusters to see if average is small
             if len(clussize) >= clussize_window:
                 av_size = sum(clussize[-clussize_window:]) / clussize_window
@@ -336,9 +337,9 @@ if mode == 'clustertest':
 #FULL CLUSTERING
 
 ##Change max_clusters to eg 10 for testing, leave out/set to 0 for production
-def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0, clussize_window=0, clussize_thresh=5):
+def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0, clussize_thresh=0, clussize_window=20):
     print("Beginning clustering...")
-    clus_N, cluster_sizes, labels = simplesim_cluster(umis, aln_thresh, max_clusters=max_clusters, clussize_window=clussize_window, clussize_thresh=clussize_thresh) 
+    clus_N, cluster_sizes, labels = simplesim_cluster(umis, aln_thresh, max_clusters=max_clusters, clussize_thresh=clussize_thresh, clussize_window=clussize_window) 
 
     #Printing some metrics
     print("\nClustering done!")
@@ -390,8 +391,8 @@ if mode == 'clusterfull':
     aln_thresh = args.aln_thresh  #50
     size_thresh = args.size_thresh  #5  
     output_folder = args.output    #'./4_clustering/BC03_RS-clusters/'
-    clussize_window = args.stop_window  #defaults to 20. Set to 0 if you don't want it to stop clustering!
-    clussize_thresh = args.stop_thresh  #5
+    clussize_thresh = args.stop_thresh  #Defaults to 5. Set to 0 if you don't want it to stop clustering!
+    clussize_window = args.stop_window  #defaults to 20. 
     
     #Make output directory
     if not os.path.exists(output_folder):
@@ -402,6 +403,6 @@ if mode == 'clusterfull':
     umis = list(SeqIO.parse(input_UMIfile, "fasta"))
     #pass lust UMI and lust reads!
 
-    cluster_sequences(umis, reads, aln_thresh, size_thresh, clussize_window=clussize_window, clussize_thresh=clussize_thresh)
+    cluster_sequences(umis, reads, aln_thresh, size_thresh, clussize_thresh=clussize_thresh, clussize_window=clussize_window)
 
 
