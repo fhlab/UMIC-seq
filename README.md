@@ -33,7 +33,7 @@ Also, provided are:
 
 The first step is to extract the UMI from the reads.
 ```
-python UMIC-seq.py UMIextract --input example_reads.fastq --probe probe.fasta --umi_loc down --umi_len 65 --output ExtractedUMIs.fasta --stop_thresh 0
+python UMIC-seq.py UMIextract --input example_reads.fastq --probe probe.fasta --umi_loc down --umi_len 65 --output ExtractedUMIs.fasta
 ```
 Arguments:
 - reads: Provide basecalled reads in fastq format.
@@ -88,7 +88,7 @@ Figure 2: Threshold approximation
 
 A full clustering of UMIs can be performed. Similar UMIs will be identified and their corresponding reads will be pooled in a fasta file. With the current nanopore error rates the alignment threshold for clustering should be a value around the length of the UMI, in this case values around 50 to 60 would work well.
 ```
-python UMIC-seq.py clusterfull --input ExtractedUMIs.fasta --reads example_reads.fastq --aln_thresh 50 --size_thresh 50 --output UMIclusterfull
+python UMIC-seq.py clusterfull --input ExtractedUMIs.fasta --reads example_reads.fastq --aln_thresh 50 --size_thresh 50 --output UMIclusterfull --stop_thresh 0
 ```
 Arguments:
 - input: Fasta file of extracted UMIs.
