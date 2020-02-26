@@ -1,8 +1,8 @@
 #Main script for UMI-linked consensus sequencing
 #Author: Paul Jannis Zurek, pjz26@cam.ac.uk
-#21/08/2019
-#v 1.0
-
+#21/08/2019 v1.0
+#07/02/2020 v1.1
+## Added quick stop to the clustering, to make it more time efficient. It'll stop clustering when essentially only outliers are left (low average clustersize).
 
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -16,7 +16,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description="""Main script for UMI-linked consensus sequencing.
                                  Author: Paul Zurek (pjz26@cam.ac.uk).
-                                 Version 1.0""")
+                                 Version 1.1""")
 #parser.add_argument('mode', help='Select mode', choices=('UMIextract', 'clustertest', 'clusterfull'))
 parser.add_argument('-T', '--threads', type=int, default=0, help='Number of threads to execute in parallel. Defaults to CPU count.')
 parser.add_argument('-v', '--version', action='version', version='1.0')
@@ -46,6 +46,8 @@ fullclus_parser.add_argument('-o', '--output', help='Folder name for output file
 fullclus_parser.add_argument('--reads', help='Fastq file of basecalled reads.', required=True)
 fullclus_parser.add_argument('--aln_thresh', type=int, help='Alignment threshold for clustering. UMIs with alignment scores higher than aln_thresh will be clustered.', required=True)
 fullclus_parser.add_argument('--size_thresh', type=int, help='Minimal size a cluster can have to be written to file.', required=True)
+fullclus_parser.add_argument('--stop_window', type=int, default=20, required=False, help='Defaults to 20. Set window size to 0 if you do not want the program to quit early.')
+fullclus_parser.add_argument('--stop_thresh', type=int, default=5, required=False, help='Defaults to 5. Stops clustering if average cluster size in window is smaller than this threshold.')
 
 #Parse arguments
 args = parser.parse_args()
@@ -165,7 +167,7 @@ def aln_score(query_nr, umi):
     score = aln.optimal_alignment_score
     return score
 
-def simplesim_cluster(umis, thresh, max_clusters=0, save_scores=False):
+def simplesim_cluster(umis, thresh, max_clusters=0, save_scores=False, clussize_window=0, clussize_thresh=5):
     N_umis = len(umis)
     #Need to generate SSW query list, as I cannot pass those objects via pool.map
     global query_lst 
@@ -201,8 +203,21 @@ def simplesim_cluster(umis, thresh, max_clusters=0, save_scores=False):
 
         clussize.append(len(sim_lst))
         clusnr += 1
-        print("Cluster %d: %d entries.    \tSeq remaining: %d    " % (clusnr, len(sim_lst), len(seq_index)), end='\r')
-        if (clusnr >= max_clusters) and (max_clusters > 0):  #Sampling!
+        
+        if clussize_window > 0:
+            #Check last few clusters to see if average is small
+            if len(clussize) >= clussize_window:
+                av_size = sum(clussize[-clussize_window:]) / clussize_window
+                if av_size < clussize_thresh:
+                    print("Ended early due to small average cluster size.")
+                    break
+                print("Cluster %d: %d entries.    \tSeq remaining: %d    \t Average size: %.2f" % (clusnr, len(sim_lst), len(seq_index), av_size), end='\r')
+            else:
+                print("Cluster %d: %d entries.    \tSeq remaining: %d    " % (clusnr, len(sim_lst), len(seq_index)), end='\r')
+        else:
+            print("Cluster %d: %d entries.    \tSeq remaining: %d    " % (clusnr, len(sim_lst), len(seq_index)), end='\r')
+        
+        if (clusnr >= max_clusters) and (max_clusters > 0):  #Sampling mode!
             break
 
     pool.close()
@@ -307,7 +322,7 @@ def threshold_approx(umis, ssize, left, right, step, outname):
 if mode == 'clustertest':
     #Setup
     input_file = args.input #'./2_UMIextract/UMIexCS_BC03.fasta'
-    sample_size = args.samplesize  #12
+    sample_size = args.samplesize  #25
     output_name = args.output  #'aproxCS_BC03'
     left, right, step = args.steps   #10, 60, 5
 
@@ -321,9 +336,9 @@ if mode == 'clustertest':
 #FULL CLUSTERING
 
 ##Change max_clusters to eg 10 for testing, leave out/set to 0 for production
-def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0):
+def cluster_sequences(umis, reads, aln_thresh, size_thresh, max_clusters=0, clussize_window=0, clussize_thresh=5):
     print("Beginning clustering...")
-    clus_N, cluster_sizes, labels = simplesim_cluster(umis, aln_thresh, max_clusters=max_clusters) 
+    clus_N, cluster_sizes, labels = simplesim_cluster(umis, aln_thresh, max_clusters=max_clusters, clussize_window=clussize_window, clussize_thresh=clussize_thresh) 
 
     #Printing some metrics
     print("\nClustering done!")
@@ -375,7 +390,9 @@ if mode == 'clusterfull':
     aln_thresh = args.aln_thresh  #50
     size_thresh = args.size_thresh  #5  
     output_folder = args.output    #'./4_clustering/BC03_RS-clusters/'
-
+    clussize_window = args.stop_window  #defaults to 20. Set to 0 if you don't want it to stop clustering!
+    clussize_thresh = args.stop_thresh  #5
+    
     #Make output directory
     if not os.path.exists(output_folder):
         os.makedirs(output_folder) 
@@ -385,6 +402,6 @@ if mode == 'clusterfull':
     umis = list(SeqIO.parse(input_UMIfile, "fasta"))
     #pass lust UMI and lust reads!
 
-    cluster_sequences(umis, reads, aln_thresh, size_thresh)
+    cluster_sequences(umis, reads, aln_thresh, size_thresh, clussize_window=clussize_window, clussize_thresh=clussize_thresh)
 
 
