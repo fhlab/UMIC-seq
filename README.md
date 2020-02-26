@@ -33,7 +33,7 @@ Also, provided are:
 
 The first step is to extract the UMI from the reads.
 ```
-python UMIC-seq.py UMIextract --input example_reads.fastq --probe probe.fasta --umi_loc down --umi_len 65 --output ExtractedUMIs.fasta
+python UMIC-seq.py UMIextract --input example_reads.fastq --probe probe.fasta --umi_loc down --umi_len 65 --output ExtractedUMIs.fasta --stop_thresh 0
 ```
 Arguments:
 - reads: Provide basecalled reads in fastq format.
