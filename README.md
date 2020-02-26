@@ -86,7 +86,7 @@ Figure 2: Threshold approximation
 
 ### Full clustering
 
-A full clustering of UMIs can be performed. Similar UMIs will be identified and their corresponding reads will be pooled in a fasta file.
+A full clustering of UMIs can be performed. Similar UMIs will be identified and their corresponding reads will be pooled in a fasta file. With the current nanopore error rates the alignment threshold for clustering should be a value around the length of the UMI, in this case values around 50 to 60 would work well.
 ```
 python UMIC-seq.py clusterfull --input ExtractedUMIs.fasta --reads example_reads.fastq --aln_thresh 50 --size_thresh 50 --output UMIclusterfull
 ```
