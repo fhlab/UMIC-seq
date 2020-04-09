@@ -3,6 +3,9 @@
 #21/08/2019 v1.0
 #07/02/2020 v1.1
 ## Added quick stop to the clustering, to make it more time efficient. It'll stop clustering when essentially only outliers are left (low average clustersize).
+#09/04/2020 v1.1.1
+## Minor changes to aesthetics
+
 
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -16,10 +19,10 @@ import argparse
 
 parser = argparse.ArgumentParser(description="""Main script for UMI-linked consensus sequencing.
                                  Author: Paul Zurek (pjz26@cam.ac.uk).
-                                 Version 1.1""")
+                                 Version 1.1.1""")
 #parser.add_argument('mode', help='Select mode', choices=('UMIextract', 'clustertest', 'clusterfull'))
 parser.add_argument('-T', '--threads', type=int, default=0, help='Number of threads to execute in parallel. Defaults to CPU count.')
-parser.add_argument('-v', '--version', action='version', version='1.0')
+parser.add_argument('-v', '--version', action='version', version='1.1.1')
 
 subparsers = parser.add_subparsers(help='Select mode', dest='mode')
 
@@ -36,7 +39,7 @@ extract_parser.add_argument('--min_probe_score', help='Minimal alignment score o
 clustest_parser = subparsers.add_parser('clustertest', help='Test suitable alignment thresholds for clustering.')
 clustest_parser.add_argument('-i', '--input', help='Fasta file of extracted UMIs.', required=True)
 clustest_parser.add_argument('-o', '--output', help='Prefix for output files.', required=True)
-clustest_parser.add_argument('--steps', help='Accepts left border, right border and step width for sampled thresholds. Defaults to 20 70 10 (samples thresholds 20 30 40 .. 70).', nargs=3, type=int, required=True)
+clustest_parser.add_argument('--steps', help='Accepts left border, right border and step width for sampled thresholds. Defaults to 20 70 10 (samples thresholds 20 30 40 .. 70).', nargs=3, type=int, default=[20,70,10])
 clustest_parser.add_argument('--samplesize', help='Number of clusters to be sampled for threshold approximation. Defaults to 25.', type=int, default=25)
 
 #Arguments for clusterfull
@@ -265,7 +268,7 @@ def averages_withincluster(n_samples, labels, umis):
         sim, l = within_cluster_analysis(i, labels, umis)
         similarity_lst.append(sim)
         length_lst.append(l)
-    return np.average(similarity_lst), np.average(length_lst), np.std(similarity_lst), np.std(length_lst)
+    return np.average(similarity_lst), np.average(length_lst), np.median(length_lst)
 
 #Plots similarity histogram
 def similarity_histogram(score_lst_lst, outname):
@@ -292,17 +295,14 @@ def similarity_histogram(score_lst_lst, outname):
 #Function performing a threshold approximation for clustering
 def threshold_approx(umis, ssize, left, right, step, outname):
     threshholds = list(range(left, right+step, step))
-    similarities_lst, sim_std_lst = [], []
-    sizes_lst, size_std_lst = [], []
+    similarities_lst, sizes_lst = [], []
     print(f"Starting threshold approximation ({threads} threads)")
     for thresh in threshholds:
         _, _, read_labels, scores_lst_lst = simplesim_cluster(umis, thresh, max_clusters=ssize, save_scores=True)
-        average_sim, average_size, sim_std, size_std = averages_withincluster(ssize, read_labels, umis)
+        average_sim, _, median_size = averages_withincluster(ssize, read_labels, umis)
         similarities_lst.append(average_sim)
-        sizes_lst.append(average_size)
-        sim_std_lst.append(sim_std)
-        size_std_lst.append(size_std)
-        print(f"Threshold {thresh}: Average similarity {average_sim:.2f} and size {average_size:.0f}                ")
+        sizes_lst.append(median_size)
+        print(f"Threshold {thresh}: Average similarity {average_sim:.2f} and median size {median_size:.0f}                ")
 
     if ssize >= 25:
         #Plot a similarity histogram
@@ -311,21 +311,22 @@ def threshold_approx(umis, ssize, left, right, step, outname):
     #Plot threshold approximation
     fig, ax1 = plt.subplots(figsize=(6,6))
     ax2 = ax1.twinx()
-    ax1.errorbar(threshholds, similarities_lst, yerr=sim_std_lst, color="k", marker="o", linestyle="-", linewidth=2, capsize=3, elinewidth=0.5)
-    ax2.errorbar(threshholds, sizes_lst, yerr=size_std_lst, color="b", marker="o", linestyle="-", linewidth=2, capsize=3, elinewidth=0.5)
-    ax1.set_xlabel("Alignment score threshold", fontsize=14)
-    ax1.set_ylabel("Cluster similarity", color="k", fontsize=14)
-    ax2.set_ylabel("Cluster size", color="b", fontsize=14)
+    ax1.plot(threshholds, similarities_lst, color="k", marker="o", linestyle="-", linewidth=2)
+    ax2.plot(threshholds, sizes_lst, color="b", marker="o", linestyle="-", linewidth=2)
+    #ax1.errorbar(threshholds, similarities_lst, yerr=sim_std_lst, color="k", marker="o", linestyle="-", linewidth=2, capsize=3, elinewidth=0.5)
+    #ax2.errorbar(threshholds, sizes_lst, yerr=size_std_lst, color="b", marker="o", linestyle="-", linewidth=2, capsize=3, elinewidth=0.5)    ax1.set_xlabel("Alignment score threshold", fontsize=14)
+    ax1.set_ylabel("Average cluster similarity", color="k", fontsize=14)
+    ax2.set_ylabel("Median cluster size", color="b", fontsize=14)
     ax2.set_ylim(0, max(sizes_lst)+10)
     plt.savefig(outname + "_thresholdapproximation.pdf", bbox_inches='tight')
 
 
 if mode == 'clustertest':
     #Setup
-    input_file = args.input #'./2_UMIextract/UMIexCS_BC03.fasta'
-    sample_size = args.samplesize  #25
-    output_name = args.output  #'aproxCS_BC03'
-    left, right, step = args.steps   #10, 60, 5
+    input_file = args.input
+    sample_size = args.samplesize
+    output_name = args.output
+    left, right, step = args.steps  #Probably a good idea to have sensible default values based on the UMI length. Maybe a range from 0.5 x len to 1.5 x len.
 
     #Load umis and start approximation
     umis = list(SeqIO.parse(input_file, "fasta"))
