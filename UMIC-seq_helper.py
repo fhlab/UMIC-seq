@@ -5,6 +5,8 @@
 ## Increased memory efficiency:
 ## - Using SeqIO.index
 ## - Using generators (and imap instead of map)
+#09/04/2020 v1.1.1
+## Improved writing to file speed for demultiplexer
 
 import numpy as np
 from Bio import SeqIO
@@ -15,9 +17,9 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description="""Helper script for UMI-linked consensus sequencing.
                                  Author: Paul Zurek (pjz26@cam.ac.uk).
-                                 Version 1.1""")
+                                 Version 1.1.1""")
 parser.add_argument('-T', '--threads', type=int, default=0, help='Number of threads to execute in parallel. Defaults to CPU count.')
-parser.add_argument('-v', '--version', action='version', version='1.0')
+parser.add_argument('-v', '--version', action='version', version='1.1.1')
 
 subparsers = parser.add_subparsers(help='Select mode', dest='mode')
 
@@ -141,9 +143,22 @@ if mode == 'demultiplex':
     
     #Generator for writing correct barcode files for memory efficiency
     print("\nWriting to file...")
-    for bc_id in range(n_assigns): 
-        barcode_gen = (rec for i, rec in enumerate(SeqIO.parse(input_file, 'fastq')) if assigned_bcs[i] == bc_id) 
-        SeqIO.write(barcode_gen, f'{output_name}_{barcode_names[bc_id]}.fastq', 'fastq')
+    handles = []
+    for bc_name in barcode_names:
+        filename = f'{output_name}_{bc_name}.fastq'
+        h = open(filename, "w")
+        handles.append(h)
+
+    i = 0
+    for rec in SeqIO.parse(input_file, 'fastq'):
+        txt = rec.format("fastq")
+        bc_id = assigned_bcs[i]
+        handles[bc_id].write(txt)
+        i += 1
+
+    for h in handles:
+        h.close()
+    print("Finished.")
 
 
 
@@ -199,8 +214,7 @@ def mutate_reference(muts, refstr):
 
     return "".join(variant)
 
-
-#NEEDS TESTING!
+  
 if mode == 'vcf2fasta':
     from allel import read_vcf
     from Bio.Seq import Seq
