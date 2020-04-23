@@ -1,6 +1,6 @@
 # UMIC-seq
 **UMI-linked consensus sequencing tool.**\
-Scripts accompanying "High-accuracy nanopore consensus sequencing for protein engineering" (Zurek PJ, Knyphausen P, Neufeld K, Pushpanath A, Hollfelder F, *in preparation*) 
+Scripts accompanying "Reaching sufficient accuracy in nanopore sequencing to enable phylogenetic analysis of directed enzyme evolution" (Zurek PJ, Knyphausen P, Neufeld K, Pushpanath A, Hollfelder F, *in preparation*) 
 
 ## Setup and installation
 This python script is meant to be used as a stand-alone. Just download and copy it into your working directory or add it to your environment path.
