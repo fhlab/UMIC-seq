@@ -56,9 +56,8 @@ countdata["totalcount"] = countdata["R1"] + countdata["R2"] + countdata["R3"]
 #Plot tSNE by round
 plt.figure(figsize=(7,6))
 plt.scatter(Xtsne[:,0], Xtsne[:,1], s=6, c=countdata["roundcolor"], edgecolors="k", linewidths=0.3) 
-plt.scatter(Xtsne[0,0], Xtsne[0,1], s=10, c="green")
-plt.yticks([])
-plt.xticks([])
+plt.scatter(Xtsne[0,0], Xtsne[0,1], s=20, c="#2ca25f", edgecolors="k", linewidths=0.3)
+plt.axis('off')
 plt.savefig("tSNE_by-round.png", bbox_inches="tight")
 
 ### Finding interesting variants
@@ -128,6 +127,5 @@ sizes = [c+2 for c in countdata["totalcount"]]
 
 plt.figure(figsize=(7,6))
 plt.scatter(Xtsne[:,0], Xtsne[:,1], s=sizes, c=founder_colors, edgecolors="k", linewidths=0.3) 
-plt.yticks([])
-plt.xticks([])
+plt.axis('off')
 plt.savefig("tSNE_by-founder.png", bbox_inches="tight")
