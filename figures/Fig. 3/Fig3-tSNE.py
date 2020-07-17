@@ -56,7 +56,7 @@ countdata["totalcount"] = countdata["R1"] + countdata["R2"] + countdata["R3"]
 #Plot tSNE by round
 plt.figure(figsize=(7,6))
 plt.scatter(Xtsne[:,0], Xtsne[:,1], s=6, c=countdata["roundcolor"], edgecolors="k", linewidths=0.3) 
-plt.scatter(Xtsne[0,0], Xtsne[0,1], s=20, c="#2ca25f", edgecolors="k", linewidths=0.3)
+plt.scatter(Xtsne[0,0], Xtsne[0,1], s=100, c="#2ca25f", edgecolors="k", linewidths=0.3)
 plt.axis('off')
 plt.savefig("tSNE_by-round.png", bbox_inches="tight")
 
