@@ -9,7 +9,7 @@ from sklearn.manifold import TSNE
 
 
 #Load in count data containing the mutations of each variant
-countdata = pd.read_csv("Zurek_Extended_Data.csv")
+countdata = pd.read_csv("Zurek_Supplementary_Data.csv")
 #Generate list of mutations from the strings
 mutations_lst = [muts.split(" ") for muts in countdata["Mutations"][1:]]
 mutations_lst.insert(0,[]) #Handle WT
