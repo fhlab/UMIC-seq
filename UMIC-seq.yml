@@ -14,9 +14,9 @@ dependencies:
   - blosc=1.17.0=he1b5a44_1
   - bokeh=1.3.4=py37_0
   - bzip2=1.0.8=h516909a_1
-  - ca-certificates=2019.6.16=hecc5488_0
+  - ca-certificates=2020.10.14=0
   - cachecontrol=0.12.5=py_0
-  - certifi=2019.6.16=py37_1
+  - certifi=2020.12.5=py37h06a4308_0
   - cffi=1.12.3=py37h8022711_0
   - chardet=3.0.4=py37_1003
   - click=7.0=py_0
@@ -85,7 +85,7 @@ dependencies:
   - numexpr=2.7.0=py37hb3f55d8_0
   - numpy=1.17.2=py37h95a1406_0
   - olefile=0.46=py_0
-  - openssl=1.1.1c=h516909a_0
+  - openssl=1.1.1h=h7b6447c_0
   - packaging=19.0=py_0
   - pandas=0.25.1=py37hb3f55d8_0
   - parso=0.5.1=py_0
@@ -133,6 +133,7 @@ dependencies:
   - tk=8.6.8=hbc83047_0
   - toolz=0.10.0=py_0
   - tornado=6.0.3=py37h516909a_0
+  - tqdm=4.54.1=pyhd3eb1b0_0
   - traitlets=4.3.2=py37_1000
   - urllib3=1.25.3=py37_0
   - wcwidth=0.1.7=py_1
@@ -146,5 +147,3 @@ dependencies:
   - zipp=0.6.0=py_0
   - zlib=1.2.11=h7b6447c_3
   - zstd=1.4.0=h3b9ef0a_0
-prefix: /home/paul/miniconda3/envs/UMIC-seq
-
